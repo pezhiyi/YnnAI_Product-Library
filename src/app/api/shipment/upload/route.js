@@ -1,16 +1,15 @@
 import { NextResponse } from 'next/server';
 import { getUrlFromBosKey, generateBosKey, uploadToBos } from '../../../utils/bosStorage';
 
-export const config = {
-  api: {
-    // 增加API路由的请求体大小限制
-    bodyParser: {
-      sizeLimit: '50mb' // 设置更大的限制或 false 表示不限制
-    }
-  }
-};
+// 使用新的配置方式
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
+  // 设置响应头，允许大文件上传
+  const response = new NextResponse();
+  response.headers.set('Transfer-Encoding', 'chunked');
+  
   try {
     // 获取表单数据
     const formData = await request.formData();
